@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ade Sity Zhahara | Informatics Engineering Student ꨄ︎</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
+        body.light { --bg: linear-gradient(135deg, #f5bed0, #d2b1bb); --text: #4a2c3a; --card-bg: rgba(250,200,225,0.85); --border: #f390a9; --badge: #ffdee9; --badge-text: #b13e62; --footer: #ffecf1; --rainbow: linear-gradient(90deg,#ff6b6b,#ff9b6b,#ffd93b,#6bcb77,#4d96ff,#b56bff,#ff6b6b); --shadow: 0 20px 40px -12px rgba(236,72,153,0.15); }
+        body.dark { --bg: linear-gradient(135deg, #54223e, #2a1a30); --text: #f3dce8; --card-bg: rgba(30,20,40,0.85); --border: #b13e62; --badge: #381628; --badge-text: #ffb7cf; --footer: #1f1528; --rainbow: linear-gradient(90deg,#ff8888,#ffaa88,#ffe888,#88ff88,#8888ff,#cc88ff,#ff8888); --shadow: 0 20px 30px -12px rgba(0,0,0,0.4); }
+        body { background: var(--bg); color: var(--text); }
+        
+        /* ========= NAVBAR ATAS ========= */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 400;
+            padding: 0.4rem 0;
+            transition: 0.3s;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            position: relative;
+            letter-spacing: 0.5px;
+        }
+        .top-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: linear-gradient(90deg, #ffb347, #ff6b6b, #ff99cc);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        .top-nav a:hover::after { width: 100%; }
+        .top-nav a:hover { color: #ffcce0; transform: translateY(-2px); }
+        
+        /* Toggle di pojok kanan */
+        .toggle-right {
+            position: fixed;
+            top: 0.8rem;
+            right: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1001;
+            background: rgba(0,0,0,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 40px;
+            backdrop-filter: blur(8px);
+        }
+        .toggle-icon {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.3rem 0.6rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .toggle-icon:hover {
+            background: rgba(255,255,255,0.4);
+            transform: scale(1.05);
+        }
+        .toggle-icon.active {
+            background: #ff99cc;
+            border-color: #ff99cc;
+            color: white;
+        }
+        
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; position: relative; background: url('pink.jpeg') center center/cover no-repeat; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); z-index: 0; }
+        .hero .container { position: relative; z-index: 2; }
+        
+        /* PROFIL KECIL */
+        .avatar-wrapper { position: fixed; top: 70px; left: 20px; z-index: 1002; display: flex; align-items: center; gap: 10px; }
+        .small-avatar { width: 45px; height: 45px; border-radius: 50%; background: linear-gradient(135deg, #ffb3d1, #ff6f91); padding: 2px; cursor: pointer; transition: transform 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .small-avatar:hover { transform: scale(1.05); }
+        .small-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 2px solid white; }
+        .tap-here { background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 3px 8px; border-radius: 30px; color: white; font-size: 0.65rem; font-weight: 400; animation: tapPulse 1.5s infinite; }
+        @keyframes tapPulse { 0%,100%{opacity:0.7;} 50%{opacity:1; transform:translateX(-3px);} }
+        
+        /* MODAL GALERI */
+        .profile-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .profile-modal.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--card-bg); border-radius: 2rem; padding: 2rem; max-width: 450px; width: 90%; text-align: center; position: relative; max-height: 90vh; overflow-y: auto; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #f472b6; }
+        .modal-avatar { width: 120px; height: 120px; margin: 0 auto 1rem; border-radius: 50%; background: linear-gradient(135deg, #ffb3d1, #ff6f91); padding: 5px; }
+        .modal-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 3px solid white; }
+        .modal-birth { margin-top: 1rem; font-size: 1rem; background: rgba(244,114,182,0.2); padding: 8px 16px; border-radius: 40px; display: inline-block; }
+        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; max-height: 300px; overflow-y: auto; }
+        .gallery img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid #f472b6; }
+        
+        .hero h1 { font-size: 4rem; font-weight: 400; font-family: 'Edwardian Script ITC', 'Brush Script MT', 'Great Vibes', cursive; color: white; text-shadow: 3px 3px 12px rgba(0,0,0,0.5); margin-bottom: 0.5rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+        .hero-subtitle { font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 400; color: rgba(255,255,245,0.95); text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        
+        .glow-divider { width: 80%; height: 3px; background: linear-gradient(90deg, transparent, #f472b6, #ff99cc, #f472b6, transparent); margin: 2rem auto; border-radius: 3px; animation: dividerGlow 2s ease-in-out infinite; }
+        @keyframes dividerGlow { 0%,100%{opacity:0.5;} 50%{opacity:1;} }
+        
+        .badge-custom { background: var(--badge); padding: 6px 18px; border-radius: 40px; display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 500; color: var(--badge-text); margin-bottom: 1rem; }
+        
+        /* CARD MODERN */
+        .card {
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .card:hover {
+            border: 1px solid transparent;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        .card:hover::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 300% 300%;
+            border-radius: 1.5rem;
+            z-index: -1;
+            animation: borderRotate 3s ease infinite;
+        }
+        
+        .education-item {
+            background: var(--card-bg);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .education-item:hover {
+            border: 1px solid transparent;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .education-item:hover::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 300% 300%;
+            border-radius: 1.5rem;
+            z-index: -1;
+            animation: borderRotate 3s ease infinite;
+        }
+        .education-item i { font-size: 1.6rem; margin-right: 15px; color: #c4456e; width: 40px; vertical-align: middle; }
+        
+        /* PERJALANAN PENDIDIKAN - BACKGROUND GRADASI.JPEG */
+        .education-bg-section {
+            background: url('paste.jpeg') center center/cover no-repeat;
+            position: relative;
+        }
+        .education-bg-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        .education-bg-section .container { position: relative; z-index: 2; }
+        .edwardian-title {
+            font-family: 'Edwardian Script ITC', cursive;
+            font-size: 3rem;
+            color: white;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* KEAHLIAN SAYA */
+        .skills-section {
+            background: url('yellow.jpeg') center center/cover no-repeat;
+            position: relative;
+        }
+        .skills-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 0;
+        }
+        .skills-section .container { position: relative; z-index: 2; }
+        
+        .skill-item {
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(8px);
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+        .skill-item:hover {
+            border: 1px solid transparent;
+            transform: translateX(10px);
+            background: rgba(0,0,0,0.5);
+        }
+        .skill-item:hover::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 300% 300%;
+            border-radius: 1rem;
+            z-index: -1;
+            animation: borderRotate 3s ease infinite;
+        }
+        .skill-item i { font-size: 1.3rem; margin-right: 15px; color: #ff99cc; width: 35px; }
+        
+        /* Media panel */
+        .media-panel {
+            background: var(--card-bg);
+            border-radius: 1.8rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            border: 1px solid rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .media-panel:hover {
+            border: 1px solid transparent;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        .media-panel:hover::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 300% 300%;
+            border-radius: 1.8rem;
+            z-index: -1;
+            animation: borderRotate 3s ease infinite;
+            pointer-events: none;
+        }
+        .media-header { background: linear-gradient(145deg,#ffc0dc,#ff9bc0); padding: 0.8rem; text-align: center; color: white; }
+        .media-content { padding: 1.2rem; }
+        .spotify-embed { border-radius: 12px; width: 100%; margin-bottom: 0.8rem; }
+        .artist-list { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .artist-link { background: rgba(255,105,180,0.2); padding: 6px 14px; border-radius: 30px; text-decoration: none; color: var(--text); transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; }
+        .artist-link:hover { background: #f472b6; color: white; }
+        
+        .movie-list { list-style: none; padding: 0; }
+        .movie-list li { padding: 10px 0; border-bottom: 1px solid rgba(255,105,180,0.3); display: flex; align-items: center; gap: 12px; }
+        .movie-list li i { color: #e85d8f; width: 28px; text-align: center; }
+        .movie-list li a { flex: 1; text-decoration: none; color: var(--text); font-weight: 500; font-size: 0.9rem; }
+        .movie-list li a:hover { color: #f472b6; }
+        .movie-list li .netflix-badge { background: #e50914; color: white; font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; margin-left: 8px; }
+        
+        /* Project panel */
+        .project-panel {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+        }
+        .project-panel:hover {
+            border: 1px solid transparent;
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.2);
+        }
+        .project-panel:hover::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+            background-size: 300% 300%;
+            border-radius: 2rem;
+            z-index: -1;
+            animation: borderRotate 3s ease infinite;
+        }
+        
+        @keyframes borderRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .tech-badge-white { background: white; color: #c4456e; padding: 4px 12px; border-radius: 30px; font-size: 0.7rem; font-weight: 500; display: inline-flex; align-items: center; gap: 5px; margin-right: 6px; margin-bottom: 6px; }
+        .tech-badge-white:hover { background: #f472b6; color: white; }
+        
+        .social-link { display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: #ffe2ec; border-radius: 50%; font-size: 1.6rem; color: #c4456e; text-decoration: none; transition: 0.2s; }
+        .social-link:hover { background: #f472b6; color: white; transform: translateY(-6px); }
+        
+        footer { background: var(--footer); border-radius: 2rem 2rem 0 0; padding: 1.5rem; text-align: center; font-size: 0.8rem; }
+        .container { max-width: 1200px; margin: auto; padding: 0 15px; }
+        .row { display: flex; flex-wrap: wrap; justify-content: center; }
+        .col-md-6 { width: 50%; padding: 12px; }
+        .text-center { text-align: center; }
+        .py-5 { padding: 3rem 0; }
+        .d-flex { display: flex; }
+        .justify-center { justify-content: center; }
+        .gap-4 { gap: 1.5rem; }
+        .flex-wrap { flex-wrap: wrap; }
+        .btn-project { background: #ff6b8b; color: white; border: none; padding: 10px 28px; border-radius: 40px; font-weight: 600; cursor: pointer; font-size: 0.9rem; margin-top: 1rem; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-page { background: #c4456e; color: white; border: none; padding: 10px 28px; border-radius: 40px; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; margin: 0 8px; }
+        .btn-project:hover, .btn-page:hover { background: #e53e6b; transform: scale(1.02); }
+        .page { display: none; }
+        .page.active { display: block; }
+        .projects-vertical { display: flex; flex-direction: column; gap: 2rem; margin-top: 1rem; }
+        .transport-icons { display: flex; gap: 1rem; justify-content: center; align-items: center; }
+        .transport-icon { font-size: 1.8rem; color: #ff9bc0; animation: bounce 2s ease-in-out infinite; }
+        @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        .quote-container {
+            text-align: center;
+            padding: 1rem;
+        }
+        .quote-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            line-height: 1.5;
+            color: var(--text);
+            margin-top: 0.5rem;
+        }
+        .quote-author {
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #f472b6;
+        }
+        .quote-icon {
+            font-size: 2rem;
+            color: #f472b6;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .col-md-6 { width: 100%; }
+            .top-nav { padding: 0.6rem 1rem; gap: 1rem; }
+            .nav-links { gap: 1rem; }
+            .top-nav a { font-size: 0.7rem; }
+            .toggle-right { right: 0.5rem; top: 0.6rem; padding: 0.2rem 0.5rem; gap: 0.3rem; }
+            .toggle-icon { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+            .avatar-wrapper { top: 60px; left: 10px; }
+            .small-avatar { width: 38px; height: 38px; }
+        }
+    </style>
+</head>
+<body class="light">
+    <!-- NAVBAR ATAS -->
+    <div class="top-nav">
+        <div class="nav-links">
+            <a onclick="navigateTo('home')">Home</a>
+            <a onclick="navigateTo('about')">About</a>
+            <a onclick="navigateTo('skills')">Skills</a>
+            <a onclick="navigateTo('project')">Project</a>
+            <a onclick="navigateTo('contact')">Contact</a>
+        </div>
+    </div>
+    
+    <!-- TOGGLE DI POJOK KANAN -->
+    <div class="toggle-right">
+        <span id="indBtn" class="toggle-icon" title="Bahasa Indonesia">🇮🇩</span>
+        <span id="engBtn" class="toggle-icon" title="English">🇬🇧</span>
+        <span id="lightBtn" class="toggle-icon" title="Light Mode">☀️</span>
+        <span id="darkBtn" class="toggle-icon" title="Dark Mode">🌙</span>
+    </div>
+
+    <!-- PROFIL KECIL -->
+    <div class="avatar-wrapper">
+        <div class="small-avatar" id="smallAvatar">
+            <img src="asz.jpeg" alt="Ade" onerror="this.src='https://via.placeholder.com/45x45?text=Ade'">
+        </div>
+        <div class="tap-here"><i class="fas fa-hand-point-left"></i> Tap</div>
+    </div>
+
+    <!-- MODAL GALERI -->
+    <div id="profileModal" class="profile-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeModalBtn">&times;</span>
+            <div class="modal-avatar"><img src="asz.jpeg" alt="Ade" onerror="this.src='https://via.placeholder.com/120x120?text=Ade'"></div>
+            <h3 style="font-family: 'Edwardian Script ITC', cursive; font-size: 1.8rem;">Ade Sity Zhahara</h3>
+            <div class="modal-birth"><i class="fas fa-map-marker-alt"></i> Padang Tiji</div>
+            <div class="modal-birth"><i class="fas fa-calendar-alt"></i> 02 Oktober 2006</div>
+            <div class="gallery">
+                <img src="pinkk.jpeg" alt="pinkk" onerror="this.src='https://via.placeholder.com/100?text=1'">
+                <img src="zhr.jpeg" alt="zhr" onerror="this.src='https://via.placeholder.com/100?text=2'">
+                <img src="deha.jpeg" alt="deha" onerror="this.src='https://via.placeholder.com/100?text=3'">
+                <img src="glas.jpeg" alt="glas" onerror="this.src='https://via.placeholder.com/100?text=4'">
+                <img src="melaka.jpeg" alt="melaka" onerror="this.src='https://via.placeholder.com/100?text=5'">
+                <img src="sit.jpeg" alt="sit" onerror="this.src='https://via.placeholder.com/100?text=6'">
+                <img src="yellow.jpeg" alt="yellow" onerror="this.src='https://via.placeholder.com/100?text=7'">
+                <img src="two.jpeg" alt="two" onerror="this.src='https://via.placeholder.com/100?text=8'">
+                <img src="topi.jpeg" alt="topi" onerror="this.src='https://via.placeholder.com/100?text=9'">
+            </div>
+        </div>
+    </div>
+
+    <!-- HALAMAN 1 (INDONESIA) -->
+    <div id="page1" class="page active">
+        <section id="home" class="hero">
+            <div class="container">
+                <h1><span>Ade</span> <span>Sity</span> <span>Zhahara</span></h1>
+                <div class="hero-subtitle" id="heroSubtitle">Sedang menempuh pendidikan di bidang informatika dan dalam proses memahami dunia teknologi</div>
+            </div>
+        </section>
+
+        <div class="glow-divider"></div>
+
+        <section id="about" class="py-5">
+            <div class="container">
+                <div class="text-center fade-in">
+                    <div class="badge-custom"><i class="fas fa-user-circle"></i> <span id="aboutBadge">Tentang Saya</span></div>
+                    <h2 style="font-family: 'Edwardian Script ITC', cursive; font-size: 2.5rem; margin: 0.5rem 0;"><span style="color: white;">Get to Know</span> <span style="color: #ff6b8b;">Ade</span></h2>
+                    <div class="card" style="max-width: 800px; margin: 1rem auto 0;">
+                        <p id="aboutText" style="font-size: 0.95rem; line-height: 1.6;">Saya adalah mahasiswa di bidang informatika yang sedang dalam proses belajar dan berkembang di dunia teknologi. Memiliki minat dalam pengembangan sistem dan terus berusaha meningkatkan kemampuan melalui pembelajaran dan pengalaman. Saya percaya bahwa proses adalah bagian penting untuk menjadi lebih baik setiap harinya.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="glow-divider"></div>
+
+        <section class="py-5 education-bg-section">
+            <div class="container">
+                <div class="text-center fade-in">
+                    <h2 class="edwardian-title" id="educationTitle">Perjalanan Pendidikan</h2>
+                    <div style="max-width: 600px; margin: 0 auto;">
+                        <div class="education-item"><i class="fas fa-school"></i> <strong id="edu1">MIN 15 Pidie (2012-2017)</strong></div>
+                        <div class="education-item"><i class="fas fa-chalkboard-user"></i> <strong id="edu2">SMPN 2 Padang Tiji (2018-2020)</strong></div>
+                        <div class="education-item"><i class="fas fa-graduation-cap"></i> <strong id="edu3">SMANSA Padang Tiji (2021-2023)</strong></div>
+                        <div class="education-item"><i class="fas fa-university"></i> <strong id="edu4">Universitas Jabal Ghafur (2025-sekarang)</strong></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="glow-divider"></div>
+
+        <section id="skills" class="py-5 skills-section">
+            <div class="container">
+                <div class="text-center fade-in">
+                    <div class="badge-custom" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); color: white;"><i class="fas fa-cog"></i> <span id="skillsBadge">Kemampuan</span></div>
+                    <h2 style="font-family: 'Edwardian Script ITC', cursive; font-size: 2.5rem; color: white; margin: 1rem 0 2rem;" id="skillsTitle">Keahlian Saya</h2>
+                    <div style="max-width: 500px; margin: 0 auto;">
+                        <div class="skill-item"><i class="fas fa-video"></i> <span id="skill1">Editing Foto & Video</span></div>
+                        <div class="skill-item"><i class="fas fa-camera"></i> <span id="skill2">Basic Photography</span></div>
+                        <div class="skill-item"><i class="fas fa-desktop"></i> <span id="skill3">Basic Computer</span></div>
+                        <div class="skill-item"><i class="fas fa-pencil-alt"></i> <span id="skill4">Drawing</span></div>
+                        <div class="skill-item"><i class="fas fa-microphone-alt"></i> <span id="skill5">Singing</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="glow-divider"></div>
+
+        <section class="py-5">
+            <div class="container">
+                <div class="text-center fade-in">
+                    <div class="badge-custom"><i class="fas fa-heart"></i> <span id="favBadge">Favoritku</span></div>
+                    <h2 style="font-family: 'Edwardian Script ITC', cursive; font-size: 2.2rem; margin: 0.5rem 0;"><span style="color: white;" id="musicText">Musik</span> <span style="color: #ff6b8b;" id="filmText">& Film</span></h2>
+                    <p style="margin-bottom: 1.5rem; font-size: 0.9rem;" id="favSub">Yang aku putar dan tonton 🎵🎬</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="media-panel">
+                                <div class="media-header"><i class="fab fa-spotify fa-2x"></i><h4 style="font-size: 1rem;" id="musicHeader">🎧 My Favorite Music</h4></div>
+                                <div class="media-content">
+                                    <iframe class="spotify-embed" src="https://open.spotify.com/embed/album/58eNU0JJvtAWAg9KUZ9Ghf" width="100%" height="180" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                                    <div class="artist-list">
+                                        <a href="#" class="artist-link"><i class="fab fa-spotify"></i> Taylor Swift</a>
+                                        <a href="#" class="artist-link"><i class="fab fa-spotify"></i> Billie Eilish</a>
+                                        <a href="#" class="artist-link"><i class="fab fa-spotify"></i> Arijit Singh</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="media-panel">
+                                <div class="media-header"><i class="fas fa-film fa-2x"></i><h4 style="font-size: 1rem;" id="movieHeader">📺 Movies I've Watched</h4></div>
+                                <div class="media-content">
+                                    <ul class="movie-list">
+                                        <li><i class="fas fa-cloud-moon"></i> <a href="https://www.netflix.com/id/title/81220825" target="_blank">Slumberland <span class="netflix-badge">Netflix</span></a></li>
+                                        <li><i class="fas fa-hat-wizard"></i> <a href="https://www.netflix.com/id/title/80218885" target="_blank">The School for Good and Evil <span class="netflix-badge">Netflix</span></a></li>
+                                        <li><i class="fas fa-book"></i> <a href="https://www.netflix.com/id/title/81002270" target="_blank">Nightbooks <span class="netflix-badge">Netflix</span></a></li>
+                                        <li><i class="fas fa-dragon"></i> <a href="https://www.netflix.com/id/title/80991090" target="_blank">Damsel <span class="netflix-badge">Netflix</span></a></li>
+                                        <li><i class="fas fa-water"></i> <a href="https://www.netflix.com/title/70251895" target="_blank">The Impossible <span class="netflix-badge">Netflix</span></a></li>
+                                        <li><i class="fas fa-wave"></i> <a href="https://www.netflix.com/title/80080201" target="_blank">The Wave <span class="netflix-badge">Netflix</span></a></li>
+                                        <li><i class="fas fa-island"></i> <a href="https://www.netflix.com/title/80242491" target="_blank">The Stranded <span class="netflix-badge">Netflix</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="text-center py-4"><button class="btn-page" onclick="goToPage(2)"><i class="fas fa-arrow-right"></i> <span id="nextBtn">Next Page → (Project & Contact)</span></button></div>
+    </div>
+
+    <!-- HALAMAN 2 (sama untuk kedua bahasa, konten statis) -->
+    <div id="page2" class="page">
+        <section id="project" class="py-5">
+            <div class="container">
+                <div class="text-center fade-in">
+                    <div class="badge-custom"><i class="fas fa-star"></i> ✨ Proyek Unggulan</div>
+                    <h2 style="font-family: 'Edwardian Script ITC', cursive; font-size: 2.5rem;"><span style="color: white;">Karyaku</span> <span style="color: #ff6b8b;">✨ Kreasi Digital</span></h2>
+                    <p class="mt-2" style="margin-bottom: 2rem; font-size: 0.9rem;">Inovasi digital yang saya bangun dengan penuh semangat</p>
+                </div>
+                
+                <div class="projects-vertical">
+                    <div class="project-panel fade-in">
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; justify-content: space-between;">
+                            <div style="flex:1;">
+                                <h3 style="font-size: 1.3rem;"><i class="fas fa-road" style="color:#f472b6;"></i> jalanYuk</h3>
+                                <p style="line-height:1.6; margin-top:12px; font-size: 0.9rem;">JalanYuk adalah platform digital berbasis web yang menyediakan layanan transportasi, di daerah pidie. Aplikasi ini dirancang untuk membantu masyarakat/pengguna pidie untuk memudahkan perjalanan sehari-hari secara cepat, praktis, dan efisien.</p>
+                                <div class="mt-3">
+                                    <span class="tech-badge-white"><i class="fab fa-html5"></i> HTML5</span>
+                                    <span class="tech-badge-white"><i class="fab fa-css3-alt"></i> CSS3</span>
+                                    <span class="tech-badge-white"><i class="fab fa-js"></i> JavaScript</span>
+                                    <span class="tech-badge-white"><i class="fab fa-github"></i> GitHub Pages</span>
+                                </div>
+                                <button class="btn-project mt-4" onclick="window.open('https://adesity06-art.github.io/jalanyukk/', '_blank')"><i class="fas fa-external-link-alt"></i> View Project</button>
+                            </div>
+                            <div style="min-width: 80px; text-align:center;"><i class="fas fa-motorcycle transport-icon"></i><i class="fas fa-car transport-icon"></i></div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-panel fade-in">
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; justify-content: space-between;">
+                            <div style="flex:1;">
+                                <h3 style="font-size: 1.3rem;"><i class="fas fa-shield-alt" style="color:#f472b6;"></i> Guardian.</h3>
+                                <p style="line-height:1.6; margin-top:12px; font-size: 0.9rem;">Guardian adalah platform digital yang dirancang untuk memberikan respon cepat dalam situasi darurat. Sistem ini berfungsi sebagai "penjaga" yang selalu siap membantu pengguna saat menghadapi kondisi kritis seperti kecelakaan, bencana, atau keadaan mendesak lainnya.</p>
+                                <div class="mt-3">
+                                    <span class="tech-badge-white"><i class="fab fa-html5"></i> HTML5</span>
+                                    <span class="tech-badge-white"><i class="fab fa-css3-alt"></i> CSS3</span>
+                                    <span class="tech-badge-white"><i class="fab fa-js"></i> JavaScript</span>
+                                    <span class="tech-badge-white"><i class="fab fa-github"></i> GitHub Pages</span>
+                                </div>
+                                <button class="btn-project mt-4" onclick="window.open('https://adesity06-art.github.io/Guardian./', '_blank')"><i class="fas fa-external-link-alt"></i> View Project</button>
+                            </div>
+                            <div style="min-width: 80px; text-align:center;"><i class="fas fa-shield-alt" style="font-size: 2.5rem; color:#ff9bc0; animation: bounce 2s ease-in-out infinite;"></i></div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-panel fade-in">
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; justify-content: space-between;">
+                            <div style="flex:1;">
+                                <h3 style="font-size: 1.3rem;"><i class="fas fa-utensils" style="color:#f472b6;"></i> Yummylicious</h3>
+                                <p style="line-height:1.6; margin-top:12px; font-size: 0.9rem;">Yummylicious adalah sebuah project kuliner yang hadir sebagai solusi buat orang-orang yang mager keluar rumah tapi tetap pengen menikmati makanan enak. Dengan tampilan yang menarik dan konsep yang simpel, Yummylicious menyediakan berbagai pilihan menu dan rekomendasi makanan yang bisa diakses dengan mudah. Project ini memudahkan pengguna untuk menemukan makanan favorit tanpa harus repot, jadi tetap bisa menikmati hidangan lezat dengan cara yang praktis dan nyaman.</p>
+                                <div class="mt-3">
+                                    <span class="tech-badge-white"><i class="fab fa-html5"></i> HTML5</span>
+                                    <span class="tech-badge-white"><i class="fab fa-css3-alt"></i> CSS3</span>
+                                    <span class="tech-badge-white"><i class="fab fa-js"></i> JavaScript</span>
+                                    <span class="tech-badge-white"><i class="fab fa-github"></i> GitHub Pages</span>
+                                </div>
+                                <button class="btn-project mt-4" onclick="window.open('https://adesity06-art.github.io/yummy/', '_blank')"><i class="fas fa-external-link-alt"></i> View Project</button>
+                            </div>
+                            <div style="min-width: 80px; text-align:center;"><i class="fas fa-hamburger" style="font-size: 2.5rem; color:#ff9bc0; animation: bounce 2s ease-in-out infinite;"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-5" style="background:var(--footer)">
+            <div class="container">
+                <div class="text-center mb-4"><div class="badge-custom"><i class="fas fa-heart"></i> Connect</div><h2 style="font-size: 1.8rem; margin-top: 0.5rem;">Find Me on Socials</h2></div>
+                <div class="d-flex justify-center gap-4 flex-wrap mb-5">
+                    <a href="https://www.instagram.com/adstzhr06" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/6285262137428" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.tiktok.com/@adszhr179" target="_blank" class="social-link"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <div class="row">
+                    <div class="col-md-8" style="margin: 0 auto;">
+                        <div class="card quote-container">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <p class="quote-text">"Sulit bukan berarti berhenti, tapi tanda untuk belajar lebih keras"</p>
+                            <p class="quote-author">— Motivasi Hari Ini</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="text-center py-4"><button class="btn-page" onclick="goToPage(1)"><i class="fas fa-arrow-left"></i> Back to Home</button></div>
+    </div>
+
+    <footer><p>© 2026 Ade Sity Zhahara — Informatics Engineering Student</p></footer>
+
+    <script>
+        // MODAL GALERI
+        const smallAvatar = document.getElementById('smallAvatar');
+        const profileModal = document.getElementById('profileModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        smallAvatar.addEventListener('click', () => { profileModal.classList.add('active'); });
+        closeModalBtn.addEventListener('click', () => { profileModal.classList.remove('active'); });
+        profileModal.addEventListener('click', (e) => { if (e.target === profileModal) profileModal.classList.remove('active'); });
+        
+        // FADE IN
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+        const appearOnScroll = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, appearOptions);
+        faders.forEach(fader => appearOnScroll.observe(fader));
+        
+        // NAVIGASI
+        function goToPage(pageNum) {
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById('page' + pageNum).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function navigateTo(sectionId) {
+            if (sectionId === 'project' || sectionId === 'contact') {
+                const page2 = document.getElementById('page2');
+                const page1 = document.getElementById('page1');
+                if (!page2.classList.contains('active')) {
+                    page1.classList.remove('active');
+                    page2.classList.add('active');
+                    setTimeout(() => {
+                        const el = document.getElementById(sectionId);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                } else {
+                    const el = document.getElementById(sectionId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                const page1 = document.getElementById('page1');
+                const page2 = document.getElementById('page2');
+                if (!page1.classList.contains('active')) {
+                    page2.classList.remove('active');
+                    page1.classList.add('active');
+                    setTimeout(() => {
+                        const el = document.getElementById(sectionId);
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                } else {
+                    const el = document.getElementById(sectionId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }
+        
+        // DARK/LIGHT MODE
+        const lightBtn = document.getElementById('lightBtn');
+        const darkBtn = document.getElementById('darkBtn');
+        
+        function setThemeActive(activeId) {
+            lightBtn.classList.remove('active');
+            darkBtn.classList.remove('active');
+            document.getElementById(activeId).classList.add('active');
+        }
+        
+        lightBtn.onclick = () => {
+            document.body.classList.remove('dark');
+            document.body.classList.add('light');
+            setThemeActive('lightBtn');
+        };
+        darkBtn.onclick = () => {
+            document.body.classList.remove('light');
+            document.body.classList.add('dark');
+            setThemeActive('darkBtn');
+        };
+        
+        // BAHASA INDO-ENGLISH
+        const indBtn = document.getElementById('indBtn');
+        const engBtn = document.getElementById('engBtn');
+        
+        function setLangActive(activeId) {
+            indBtn.classList.remove('active');
+            engBtn.classList.remove('active');
+            document.getElementById(activeId).classList.add('active');
+        }
+        
+        // Teks Indonesia
+        const indoTexts = {
+            heroSubtitle: "Sedang menempuh pendidikan di bidang informatika dan dalam proses memahami dunia teknologi",
+            aboutBadge: "Tentang Saya",
+            aboutText: "Saya adalah mahasiswa di bidang informatika yang sedang dalam proses belajar dan berkembang di dunia teknologi. Memiliki minat dalam pengembangan sistem dan terus berusaha meningkatkan kemampuan melalui pembelajaran dan pengalaman. Saya percaya bahwa proses adalah bagian penting untuk menjadi lebih baik setiap harinya.",
+            educationTitle: "Perjalanan Pendidikan",
+            edu1: "MIN 15 Pidie (2012-2017)",
+            edu2: "SMPN 2 Padang Tiji (2018-2020)",
+            edu3: "SMANSA Padang Tiji (2021-2023)",
+            edu4: "Universitas Jabal Ghafur (2025-sekarang)",
+            skillsBadge: "Kemampuan",
+            skillsTitle: "Keahlian Saya",
+            skill1: "Editing Foto & Video",
+            skill2: "Basic Photography",
+            skill3: "Basic Computer",
+            skill4: "Drawing",
+            skill5: "Singing",
+            favBadge: "Favoritku",
+            musicText: "Musik",
+            filmText: "& Film",
+            favSub: "Yang aku putar dan tonton 🎵🎬",
+            musicHeader: "🎧 My Favorite Music",
+            movieHeader: "📺 Movies I've Watched",
+            nextBtn: "Next Page → (Project & Contact)"
+        };
+        
+        // Teks Inggris
+        const engTexts = {
+            heroSubtitle: "Currently studying informatics engineering and in the process of understanding the world of technology",
+            aboutBadge: "About Me",
+            aboutText: "I am an informatics engineering student who is currently learning and growing in the world of technology. I have an interest in system development and continuously strive to improve my skills through learning and experience. I believe that the process is an important part of becoming better every day.",
+            educationTitle: "Education Journey",
+            edu1: "MIN 15 Pidie (2012-2017)",
+            edu2: "SMPN 2 Padang Tiji (2018-2020)",
+            edu3: "SMANSA Padang Tiji (2021-2023)",
+            edu4: "Jabal Ghafur University (2025-present)",
+            skillsBadge: "Skills",
+            skillsTitle: "My Skills",
+            skill1: "Photo & Video Editing",
+            skill2: "Basic Photography",
+            skill3: "Basic Computer",
+            skill4: "Drawing",
+            skill5: "Singing",
+            favBadge: "My Favorites",
+            musicText: "Music",
+            filmText: "& Film",
+            favSub: "What I listen to and watch 🎵🎬",
+            musicHeader: "🎧 My Favorite Music",
+            movieHeader: "📺 Movies I've Watched",
+            nextBtn: "Next Page → (Project & Contact)"
+        };
+        
+        function applyLanguage(lang) {
+            const texts = lang === 'id' ? indoTexts : engTexts;
+            document.getElementById('heroSubtitle').innerText = texts.heroSubtitle;
+            document.getElementById('aboutBadge').innerText = texts.aboutBadge;
+            document.getElementById('aboutText').innerText = texts.aboutText;
+            document.getElementById('educationTitle').innerText = texts.educationTitle;
+            document.getElementById('edu1').innerText = texts.edu1;
+            document.getElementById('edu2').innerText = texts.edu2;
+            document.getElementById('edu3').innerText = texts.edu3;
+            document.getElementById('edu4').innerText = texts.edu4;
+            document.getElementById('skillsBadge').innerText = texts.skillsBadge;
+            document.getElementById('skillsTitle').innerText = texts.skillsTitle;
+            document.getElementById('skill1').innerText = texts.skill1;
+            document.getElementById('skill2').innerText = texts.skill2;
+            document.getElementById('skill3').innerText = texts.skill3;
+            document.getElementById('skill4').innerText = texts.skill4;
+            document.getElementById('skill5').innerText = texts.skill5;
+            document.getElementById('favBadge').innerText = texts.favBadge;
+            document.getElementById('musicText').innerText = texts.musicText;
+            document.getElementById('filmText').innerText = texts.filmText;
+            document.getElementById('favSub').innerText = texts.favSub;
+            document.getElementById('musicHeader').innerHTML = texts.musicHeader;
+            document.getElementById('movieHeader').innerHTML = texts.movieHeader;
+            document.getElementById('nextBtn').innerHTML = texts.nextBtn;
+        }
+        
+        indBtn.onclick = () => {
+            setLangActive('indBtn');
+            applyLanguage('id');
+        };
+        engBtn.onclick = () => {
+            setLangActive('engBtn');
+            applyLanguage('en');
+        };
+        
+        // DEFAULT
+        document.body.classList.add('light');
+        lightBtn.classList.add('active');
+        indBtn.classList.add('active');
+        applyLanguage('id');
+        
+        goToPage(1);
+    </script>
+</body>
+</html>
